@@ -15,6 +15,12 @@ var testQuery = query{
 	limit: 15,
 }
 
+var testQueries = map[string]query{
+	"i1:3 i2:5 limit:15":        testQuery,
+	"i1:10 i2:10 limit:100":     query{str1: "fizz", str2: "buzz", i1: 10, i2: 10, limit: 100},
+	"i1:1000 i2:1000 limit:500": query{str1: "fizz", str2: "buzz", i1: 100, i2: 100, limit: 500},
+}
+
 func testFizzBuzz(t *testing.T, f FizzBuzzFunction, name string) {
 	var b bytes.Buffer
 	err := f(testQuery, &b)
@@ -28,11 +34,11 @@ func testFizzBuzz(t *testing.T, f FizzBuzzFunction, name string) {
 	}
 }
 
-func getFizzBuzzBenchmark(f FizzBuzzFunction) func(*testing.B) {
+func getFizzBuzzBenchmark(f FizzBuzzFunction, q query) func(*testing.B) {
 	return func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			var buf bytes.Buffer
-			err := f(testQuery, &buf)
+			err := f(q, &buf)
 			if err != nil {
 				b.Log(err)
 			}
@@ -48,8 +54,10 @@ func TestAllFizzBuzz(t *testing.T) {
 }
 
 func BenchmarkAllFizzBuzz(b *testing.B) {
-	b.Run("naive", getFizzBuzzBenchmark(FizzBuzzNaive))
-	b.Run("count down", getFizzBuzzBenchmark(FizzBuzzCountDown))
-	b.Run("memorize modulo", getFizzBuzzBenchmark(FizzBuzzMemorizeModulo))
-	b.Run("updated var", getFizzBuzzBenchmark(FizzBuzzUpdatedVar))
+	for name, q := range testQueries {
+		b.Run("naive "+name, getFizzBuzzBenchmark(FizzBuzzNaive, q))
+		b.Run("count down "+name, getFizzBuzzBenchmark(FizzBuzzCountDown, q))
+		b.Run("memorize modulo "+name, getFizzBuzzBenchmark(FizzBuzzMemorizeModulo, q))
+		b.Run("updated var "+name, getFizzBuzzBenchmark(FizzBuzzUpdatedVar, q))
+	}
 }
