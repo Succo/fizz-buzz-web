@@ -17,7 +17,7 @@ var testQuery = query{
 
 var testQueries = map[string]query{
 	"i1:3 i2:5 limit:15":        testQuery,
-	"i1:10 i2:10 limit:100":     query{str1: "fizz", str2: "buzz", i1: 10, i2: 10, limit: 100},
+	"i1:10 i2:3 limit:100":      query{str1: "fizz", str2: "buzz", i1: 10, i2: 3, limit: 100},
 	"i1:1000 i2:1000 limit:500": query{str1: "fizz", str2: "buzz", i1: 100, i2: 100, limit: 500},
 }
 

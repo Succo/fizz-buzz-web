@@ -24,13 +24,34 @@ go test -bench=.
 
 On my computer the results are
 ```
-oos: linux
+goos: linux
 goarch: amd64
 pkg: github.com/Succo/fizz-buzz-web
-BenchmarkAllFizzBuzz/naive-4         	  500000	      2889 ns/op
-BenchmarkAllFizzBuzz/count_down-4    	  500000	      2433 ns/op
-BenchmarkAllFizzBuzz/memorize_modulo-4         	  500000	      2780 ns/op
-BenchmarkAllFizzBuzz/updated_var-4             	  500000	      2849 ns/op
+BenchmarkAllFizzBuzz/naive_i1:3_i2:5_limit:15-4         	  300000	      4848 ns/op
+BenchmarkAllFizzBuzz/count_down_i1:3_i2:5_limit:15-4    	  300000	      4358 ns/op
+BenchmarkAllFizzBuzz/memorize_modulo_i1:3_i2:5_limit:15-4         	  300000	      4913 ns/op
+BenchmarkAllFizzBuzz/updated_var_i1:3_i2:5_limit:15-4             	  300000	      4871 ns/op
+BenchmarkAllFizzBuzz/naive_i1:10_i2:3_limit:100-4                 	   50000	     32278 ns/op
+BenchmarkAllFizzBuzz/count_down_i1:10_i2:3_limit:100-4            	   50000	     28137 ns/op
+BenchmarkAllFizzBuzz/memorize_modulo_i1:10_i2:3_limit:100-4       	   50000	     33056 ns/op
+BenchmarkAllFizzBuzz/updated_var_i1:10_i2:3_limit:100-4           	   50000	     32756 ns/op
+BenchmarkAllFizzBuzz/naive_i1:1000_i2:1000_limit:500-4            	   10000	    183031 ns/op
+BenchmarkAllFizzBuzz/count_down_i1:1000_i2:1000_limit:500-4       	   10000	    178977 ns/op
+BenchmarkAllFizzBuzz/memorize_modulo_i1:1000_i2:1000_limit:500-4  	   10000	    186772 ns/op
+BenchmarkAllFizzBuzz/updated_var_i1:1000_i2:1000_limit:500-4      	   10000	    187417 ns/op
 PASS
-ok  	github.com/Succo/fizz-buzz-web	5.613s
+ok  	github.com/Succo/fizz-buzz-web	21.279s
 ```
+
+There is multiples query types, some are made to have a lot of fizz and buzz remplacement, whereas other are more focused on printing numbers (which is why i1 and i2 are superior to the limit).
+
+Reordered the results are (the column names are i1 i2 limit)
+
+Implementation  | 3 5 15 | 10 3 100 | 1000 1000 500 |
+---			    | ---	 | ---	    | ---		    |
+Naive 		    | 4848   | 32278    | 183031        |
+Memorize modulo | 4913   | 33056	| 186772		|
+Updated var		| 4871	 | 32756	| 187417		|
+Count down		| 4358	 | 28137	| 178977		|
+
+So it seems that using the "count down" method to avoid all modulo operation if the fatest on those small benchmark.

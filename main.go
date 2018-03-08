@@ -10,6 +10,7 @@ import (
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/fizzbuzz", fizzBuzzHandler)
+	mux.HandleFunc("/fizzbuzz/", fizzBuzzHandler)
 
 	c := loadConfig()
 
