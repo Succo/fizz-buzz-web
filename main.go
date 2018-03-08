@@ -35,6 +35,8 @@ func main() {
 	log.Fatal(srv.ListenAndServe())
 }
 
+// parseRequest reads parameters from a request to create a valid query
+// It replaces them with default values when missing but fails on invalid values
 func parseRequest(r *http.Request) (q query, err error) {
 	q.str1 = r.FormValue("string1")
 	if q.str1 == "" {
@@ -77,10 +79,11 @@ func parseRequest(r *http.Request) (q query, err error) {
 	return q, nil
 }
 
+// fizzBuzzHandler is the handler for all request to the service
 func fizzBuzzHandler(w http.ResponseWriter, r *http.Request) {
 	q, err := parseRequest(r)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
