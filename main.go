@@ -4,12 +4,22 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", fizzBuzzHandler)
-	log.Fatal(http.ListenAndServe(":8080", mux))
+
+	srv := &http.Server{
+		Addr:         "0.0.0.0:8080",
+		WriteTimeout: time.Second * 15,
+		ReadTimeout:  time.Second * 15,
+		IdleTimeout:  time.Second * 60,
+		Handler:      mux,
+	}
+
+	log.Fatal(srv.ListenAndServe())
 }
 
 func parseRequest(r *http.Request) (q query) {
