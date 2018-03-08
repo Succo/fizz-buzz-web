@@ -1,4 +1,4 @@
-Exercise: Write a simple fizz-buzz REST server.
+# Exercise: Write a simple fizz-buzz REST server.
  
 The original fizz-buzz consists in writing all numbers from 1 to 100, and just replacing all multiples of 3 by “fizz”, all multiples of 5 by “buzz”, and all multiples of 15 by “fizzbuzz”. The output would look like this:
 
@@ -12,3 +12,25 @@ Expose a REST API endpoint that accepts five parameters : two strings (say, stri
  - All multiples of int1 are replaced by string1,
  - All multiples of int2 are replaced by string2,
  - All multiples of int1 and int2 are replaced by string1string2
+
+# Note
+
+I've added multiples fizzbuzz implementations to benchmark performances.
+Benchmark can be ran with 
+
+```
+go test -bench=.
+```
+
+On my computer the results are
+```
+oos: linux
+goarch: amd64
+pkg: github.com/Succo/fizz-buzz-web
+BenchmarkAllFizzBuzz/naive-4         	  500000	      2889 ns/op
+BenchmarkAllFizzBuzz/count_down-4    	  500000	      2433 ns/op
+BenchmarkAllFizzBuzz/memorize_modulo-4         	  500000	      2780 ns/op
+BenchmarkAllFizzBuzz/updated_var-4             	  500000	      2849 ns/op
+PASS
+ok  	github.com/Succo/fizz-buzz-web	5.613s
+```
