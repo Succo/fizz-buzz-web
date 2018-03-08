@@ -28,9 +28,28 @@ func testFizzBuzz(t *testing.T, f FizzBuzzFunction, name string) {
 	}
 }
 
+func getFizzBuzzBenchmark(f FizzBuzzFunction) func(*testing.B) {
+	return func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			var buf bytes.Buffer
+			err := f(testQuery, &buf)
+			if err != nil {
+				b.Log(err)
+			}
+		}
+	}
+}
+
 func TestAllFizzBuzz(t *testing.T) {
 	testFizzBuzz(t, FizzBuzzNaive, "naive")
 	testFizzBuzz(t, FizzBuzzCountDown, "count down")
 	testFizzBuzz(t, FizzBuzzMemorizeModulo, "memorize modulo")
-	testFizzBuzz(t, FizzBuzzUpdatedVar, "memorize modulo")
+	testFizzBuzz(t, FizzBuzzUpdatedVar, "updated var")
+}
+
+func BenchmarkAllFizzBuzz(b *testing.B) {
+	b.Run("naive", getFizzBuzzBenchmark(FizzBuzzNaive))
+	b.Run("count down", getFizzBuzzBenchmark(FizzBuzzCountDown))
+	b.Run("memorize modulo", getFizzBuzzBenchmark(FizzBuzzMemorizeModulo))
+	b.Run("updated var", getFizzBuzzBenchmark(FizzBuzzUpdatedVar))
 }
