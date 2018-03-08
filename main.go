@@ -31,6 +31,7 @@ func main() {
 		Handler:      mux,
 	}
 
+	log.Printf("Starting to serve on %s\n", srv.Addr)
 	log.Fatal(srv.ListenAndServe())
 }
 
@@ -50,7 +51,7 @@ func parseRequest(r *http.Request) (q query, err error) {
 	} else {
 		q.i1, err = strconv.Atoi(int1)
 		if err != nil {
-			return q, fmt.Errorf("Unable to parse limit value %s not an integer", int1)
+			return q, fmt.Errorf("Unable to parse int1 value %s not an integer", int1)
 		}
 	}
 
@@ -60,7 +61,7 @@ func parseRequest(r *http.Request) (q query, err error) {
 	} else {
 		q.i2, err = strconv.Atoi(r.FormValue("int2"))
 		if err != nil {
-			return q, fmt.Errorf("Unable to parse limit value %s not an integer", int2)
+			return q, fmt.Errorf("Unable to parse int2 value %s not an integer", int2)
 		}
 	}
 

@@ -1,9 +1,9 @@
 # Exercise: Write a simple fizz-buzz REST server.
- 
+
 The original fizz-buzz consists in writing all numbers from 1 to 100, and just replacing all multiples of 3 by “fizz”, all multiples of 5 by “buzz”, and all multiples of 15 by “fizzbuzz”. The output would look like this:
 
 “1,2,fizz,4,buzz,fizz,7,8,fizz,buzz,11,fizz,13,14,fizzbuzz,fizz,...”
- 
+
 More specifically :
 
 Expose a REST API endpoint that accepts five parameters : two strings (say, string1 and string2), and three integers (say, int1, int2 and limit), and returns a JSON
@@ -12,6 +12,19 @@ Expose a REST API endpoint that accepts five parameters : two strings (say, stri
  - All multiples of int1 are replaced by string1,
  - All multiples of int2 are replaced by string2,
  - All multiples of int1 and int2 are replaced by string1string2
+
+# Implementation
+
+The code is split into 3 files, a main files that contains the server, a fizzbuzz file containing the fizzbuzz logic and a config file loading the configuration values.
+
+The server is pretty basic, only using golang net/http library.
+It relies on [FormValue](https://golang.org/pkg/net/http/#Request.FormValue) to extract the parameter of the request.
+I've choosen to make the library work with default values so incomplet request still get an answer. 
+However non valid values for the integers are refused.
+
+The FizzBuzz generator directly writes to the [ResponseWriter](https://golang.org/pkg/net/http/#ResponseWriter) so I don't have to generate and store any intermediate datastructure (like a list of values).
+
+The config loaders gets values from environnement variables, for now only an address variable is loaded with a default value of :8080 but more option could easily be added such as a log level.
 
 # Note
 
