@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-var testOutput = "[1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, 11, fizz, 13, 14, fizzbuzz]"
+var testOutput = `["1", "2", "fizz", "4", "buzz", "fizz", "7", "8", "fizz", "buzz", "11", "fizz", "13", "14", "fizzbuzz"]`
 
 var testQuery = query{
 	str1:  "fizz",

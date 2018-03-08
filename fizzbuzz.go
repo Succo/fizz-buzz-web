@@ -15,16 +15,28 @@ type query struct {
 
 type output []string
 
+// FizzBuzzFunction writes a json encoded list of string that correspond to a fizz buzz list
 type FizzBuzzFunction func(query, io.Writer) error
 
+// FizzBuzzNaive generates values with a switch case and all modulo in an explicit way
 func FizzBuzzNaive(q query, w io.Writer) error {
 	fizz := []byte(q.str1)
 	buzz := []byte(q.str2)
 	fizzbuzz := []byte(q.str1 + q.str2)
-	w.Write([]byte("["))
+	_, err := w.Write([]byte("["))
+	if err != nil {
+		return err
+	}
 	for i := 1; i <= q.limit; i++ {
 		if i > 1 {
-			w.Write([]byte(", "))
+			_, err := w.Write([]byte(", "))
+			if err != nil {
+				return err
+			}
+		}
+		_, err := w.Write([]byte("\""))
+		if err != nil {
+			return err
 		}
 		switch {
 		case i%q.i1 == 0 && i%q.i2 == 0:
@@ -48,18 +60,33 @@ func FizzBuzzNaive(q query, w io.Writer) error {
 				return err
 			}
 		}
+		_, err = w.Write([]byte("\""))
+		if err != nil {
+			return err
+		}
 	}
-	_, err := w.Write([]byte("]"))
+	_, err = w.Write([]byte("]"))
 	return err
 }
 
+// FizzBuzzMemorizeModulo store modulo values and avoid an explicit check for fizzbuzz cases
 func FizzBuzzMemorizeModulo(q query, w io.Writer) error {
 	fizz := []byte(q.str1)
 	buzz := []byte(q.str2)
-	w.Write([]byte("["))
+	_, err := w.Write([]byte("["))
+	if err != nil {
+		return err
+	}
 	for i := 1; i <= q.limit; i++ {
 		if i > 1 {
-			w.Write([]byte(", "))
+			_, err := w.Write([]byte(", "))
+			if err != nil {
+				return err
+			}
+		}
+		_, err := w.Write([]byte("\""))
+		if err != nil {
+			return err
 		}
 		i1 := i % q.i1
 		i2 := i % q.i2
@@ -81,18 +108,33 @@ func FizzBuzzMemorizeModulo(q query, w io.Writer) error {
 				return err
 			}
 		}
+		_, err = w.Write([]byte("\""))
+		if err != nil {
+			return err
+		}
 	}
-	_, err := w.Write([]byte("]"))
+	_, err = w.Write([]byte("]"))
 	return err
 }
 
+// FizzBuzzUpdatedVar avoid having an explicit check for fizzbuzz case by noting fizz and buzz cases
 func FizzBuzzUpdatedVar(q query, w io.Writer) error {
 	fizz := []byte(q.str1)
 	buzz := []byte(q.str2)
-	w.Write([]byte("["))
+	_, err := w.Write([]byte("["))
+	if err != nil {
+		return err
+	}
 	for i := 1; i <= q.limit; i++ {
 		if i > 1 {
-			w.Write([]byte(", "))
+			_, err := w.Write([]byte(", "))
+			if err != nil {
+				return err
+			}
+		}
+		_, err := w.Write([]byte("\""))
+		if err != nil {
+			return err
 		}
 		matched := false
 		if i%q.i1 == 0 {
@@ -115,21 +157,36 @@ func FizzBuzzUpdatedVar(q query, w io.Writer) error {
 				return err
 			}
 		}
+		_, err = w.Write([]byte("\""))
+		if err != nil {
+			return err
+		}
 	}
-	_, err := w.Write([]byte("]"))
+	_, err = w.Write([]byte("]"))
 	return err
 }
 
+// FizzBuzzCountDown avoid modulo operation by keeping counters that match fizz and buzz integer
 func FizzBuzzCountDown(q query, w io.Writer) error {
 	i1 := q.i1
 	i2 := q.i2
 	fizz := []byte(q.str1)
 	buzz := []byte(q.str2)
 	fizzbuzz := []byte(q.str1 + q.str2)
-	w.Write([]byte("["))
+	_, err := w.Write([]byte("["))
+	if err != nil {
+		return err
+	}
 	for i := 1; i <= q.limit; i++ {
 		if i > 1 {
-			w.Write([]byte(", "))
+			_, err := w.Write([]byte(", "))
+			if err != nil {
+				return err
+			}
+		}
+		_, err := w.Write([]byte("\""))
+		if err != nil {
+			return err
 		}
 		i1 = i1 - 1
 		i2 = i2 - 1
@@ -159,7 +216,11 @@ func FizzBuzzCountDown(q query, w io.Writer) error {
 				return err
 			}
 		}
+		_, err = w.Write([]byte("\""))
+		if err != nil {
+			return err
+		}
 	}
-	_, err := w.Write([]byte("]"))
+	_, err = w.Write([]byte("]"))
 	return err
 }
