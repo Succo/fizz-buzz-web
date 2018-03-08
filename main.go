@@ -9,10 +9,12 @@ import (
 
 func main() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", fizzBuzzHandler)
+	mux.HandleFunc("/fizzbuzz", fizzBuzzHandler)
+
+	c := loadConfig()
 
 	srv := &http.Server{
-		Addr:         "0.0.0.0:8080",
+		Addr:         c.addr,
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
 		IdleTimeout:  time.Second * 60,
