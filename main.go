@@ -40,8 +40,9 @@ func parseRequest(r *http.Request) (q query) {
 func fizzBuzzHandler(w http.ResponseWriter, r *http.Request) {
 	q := parseRequest(r)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	err := fizzbuzz(q, w)
+	err := FizzBuzzCountDown(q, w)
 
+	log.Printf("Serving query: %v", q)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

@@ -15,12 +15,22 @@ var testQuery = query{
 	limit: 15,
 }
 
-func TestFizzBuzz(t *testing.T) {
+func testFizzBuzz(t *testing.T, f FizzBuzzFunction, name string) {
 	var b bytes.Buffer
-	fizzbuzz(testQuery, &b)
+	err := f(testQuery, &b)
+	if err != nil {
+		t.Error(err)
+	}
 	out := b.String()
 	if out != testOutput {
-		t.Errorf("Invalid output was\n %s\n expected\n %s", out, testOutput)
+		t.Errorf("Invalid output for %s was\n %s\n expected\n %s", name, out, testOutput)
 		t.Fail()
 	}
+}
+
+func TestAllFizzBuzz(t *testing.T) {
+	testFizzBuzz(t, FizzBuzzNaive, "naive")
+	testFizzBuzz(t, FizzBuzzCountDown, "count down")
+	testFizzBuzz(t, FizzBuzzMemorizeModulo, "memorize modulo")
+	testFizzBuzz(t, FizzBuzzUpdatedVar, "memorize modulo")
 }
