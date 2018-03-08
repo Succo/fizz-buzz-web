@@ -17,10 +17,11 @@ Expose a REST API endpoint that accepts five parameters : two strings (say, stri
 
 The code is split into 3 files, a main files that contains the server, a fizzbuzz file containing the fizzbuzz logic and a config file loading the configuration values.
 
-The server is pretty basic, only using golang net/http library.
+The server is pretty basic since there is only one route, only using golang net/http library.
 It relies on [FormValue](https://golang.org/pkg/net/http/#Request.FormValue) to extract the parameter of the request.
 I've choosen to make the library work with default values so incomplet request still get an answer. 
 However non valid values for the integers are refused.
+Some test for the parser can be found in test_parser.go
 
 The FizzBuzz generator directly writes to the [ResponseWriter](https://golang.org/pkg/net/http/#ResponseWriter) so I don't have to generate and store any intermediate datastructure (like a list of values).
 
